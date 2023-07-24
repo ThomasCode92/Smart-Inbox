@@ -9,6 +9,8 @@ const web3 = new Web3(provider());
 let accounts;
 let inbox;
 
+const INITIAL_MESSAGE = 'Hi there!';
+
 beforeEach(async () => {
   // Get a list of all accounts
   accounts = await web3.eth.getAccounts();
@@ -16,12 +18,17 @@ beforeEach(async () => {
   // Use one of those accounts to deploy
   // the contract
   inbox = await new web3.eth.Contract(abi)
-    .deploy({ data: evm.bytecode.object, arguments: ['Hi there!'] })
+    .deploy({ data: evm.bytecode.object, arguments: [INITIAL_MESSAGE] })
     .send({ from: accounts[0], gas: '1000000' });
 });
 
 describe('Inbox Contract', () => {
   test('should deploy a contract', () => {
     expect(inbox.options.address).toBeDefined();
+  });
+
+  test('should have a default message', async () => {
+    const initialMessage = await inbox.methods.message().call();
+    expect(initialMessage).toBe(INITIAL_MESSAGE);
   });
 });
