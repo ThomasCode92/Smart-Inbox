@@ -21,5 +21,7 @@ beforeEach(async () => {
 });
 
 describe('Inbox Contract', () => {
-  test('should deploy a contract', () => {});
+  test('should deploy a contract', () => {
+    expect(inbox.options.address).toBeDefined();
+  });
 });
