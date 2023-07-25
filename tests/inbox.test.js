@@ -31,4 +31,13 @@ describe('Inbox Contract', () => {
     const initialMessage = await inbox.methods.message().call();
     expect(initialMessage).toBe(INITIAL_MESSAGE);
   });
+
+  test('should change the message', async () => {
+    const newMessage = 'bye';
+
+    await inbox.methods.setMessage(newMessage).send({ from: accounts[0] });
+    const message = await inbox.methods.message().call();
+
+    expect(message).toBe(newMessage);
+  });
 });
